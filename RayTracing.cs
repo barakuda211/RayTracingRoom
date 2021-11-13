@@ -48,27 +48,22 @@ namespace RayTracingRoom
              */
         public Ray Reflect(Point3D hit_point, Point3D normal)
         {
-            //высчитываем направление отраженного луча
             Point3D reflect_dir = direction - 2 * normal * Point3D.scalar(direction, normal);
             return new Ray(hit_point, hit_point + reflect_dir);
         }
 
-        //преломление
-        //все вычисления взяты из презентации
-        public Ray Refract(Point3D hit_point, Point3D normal, float refraction, float refract_coef)
+
+        public Ray Refract(Point3D hit_point, Point3D normal, float eta)
         {
             Ray res_ray = new Ray();
             float sclr = Point3D.scalar(normal, direction);
-            /*
-             Если луч падает,то он проходит прямо,не преломляясь
-             */
-            float n1n2div = refraction / refract_coef;
-            float theta_formula = 1 - n1n2div * n1n2div * (1 - sclr * sclr);
-            if (theta_formula >= 0)
+
+            float k = 1 - eta * eta * (1 - sclr * sclr);
+            if (k >= 0)
             {
-                float cos_theta = (float)Math.Sqrt(theta_formula);
+                float cos_theta = (float)Math.Sqrt(k);
                 res_ray.start = new Point3D(hit_point);
-                res_ray.direction = Point3D.norm(direction * n1n2div - (cos_theta + n1n2div * sclr) * normal);
+                res_ray.direction = Point3D.norm(eta * direction - (cos_theta + eta * sclr) * normal);
                 return res_ray;
             }
             else

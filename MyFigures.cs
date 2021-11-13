@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 
 namespace RayTracingRoom
@@ -174,12 +172,12 @@ namespace RayTracingRoom
             RotateArondRad(angle * (float)Math.PI / 180, type);
         }
 
-        public void Offset(float xs, float ys, float zs)
+        public void Move(float xs, float ys, float zs)
         {
             ApplyMatrix(ApplyOffset(GetMatrix(), xs, ys, zs));
         }
 
-        public void SetPen(Pen dw)
+        public virtual void SetPen(Pen dw)
         {
             foreach (Side s in sides)
                 s.drawing_pen = dw;
@@ -317,12 +315,15 @@ namespace RayTracingRoom
     public class Sphere : Figure
     {
         float radius;
+        Pen pen;
 
         public Sphere(Point3D p, float r)
         {
             points.Add(p);
             radius = r;
         }
+
+        public override void SetPen(Pen p) => pen = p;
 
         public static bool RaySphereIntersection(Ray r, Point3D sphere_pos, float sphere_rad, out float t)
         {
@@ -354,6 +355,7 @@ namespace RayTracingRoom
             {
                 normal = (r.start + r.direction * t) - points[0];
                 normal = Point3D.norm(normal);
+                fMaterial.color = new Point3D(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
                 return true;
             }
             return false;

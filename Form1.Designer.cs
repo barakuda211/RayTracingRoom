@@ -50,6 +50,14 @@ namespace RayTracingRoom
             this.checkBox_front = new System.Windows.Forms.CheckBox();
             this.checkBox_left = new System.Windows.Forms.CheckBox();
             this.button_draw = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBox_X = new System.Windows.Forms.TextBox();
+            this.textBox_Y = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox_Z = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.button_set_light_pos = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
             this.groupBox_cube1.SuspendLayout();
             this.groupBox_cube2.SuspendLayout();
@@ -282,11 +290,86 @@ namespace RayTracingRoom
             this.button_draw.UseVisualStyleBackColor = true;
             this.button_draw.Click += new System.EventHandler(this.button_draw_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(174, 785);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(83, 15);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Light position:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(257, 786);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(14, 15);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "X";
+            // 
+            // textBox_X
+            // 
+            this.textBox_X.Location = new System.Drawing.Point(272, 782);
+            this.textBox_X.Name = "textBox_X";
+            this.textBox_X.Size = new System.Drawing.Size(29, 23);
+            this.textBox_X.TabIndex = 8;
+            // 
+            // textBox_Y
+            // 
+            this.textBox_Y.Location = new System.Drawing.Point(323, 782);
+            this.textBox_Y.Name = "textBox_Y";
+            this.textBox_Y.Size = new System.Drawing.Size(29, 23);
+            this.textBox_Y.TabIndex = 10;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(308, 786);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(14, 15);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Y";
+            // 
+            // textBox_Z
+            // 
+            this.textBox_Z.Location = new System.Drawing.Point(379, 782);
+            this.textBox_Z.Name = "textBox_Z";
+            this.textBox_Z.Size = new System.Drawing.Size(29, 23);
+            this.textBox_Z.TabIndex = 12;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(364, 786);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(14, 15);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Z";
+            // 
+            // button_set_light_pos
+            // 
+            this.button_set_light_pos.Location = new System.Drawing.Point(418, 781);
+            this.button_set_light_pos.Name = "button_set_light_pos";
+            this.button_set_light_pos.Size = new System.Drawing.Size(107, 23);
+            this.button_set_light_pos.TabIndex = 13;
+            this.button_set_light_pos.Text = "Locate light";
+            this.button_set_light_pos.UseVisualStyleBackColor = true;
+            this.button_set_light_pos.Click += new System.EventHandler(this.button_set_light_pos_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 812);
+            this.Controls.Add(this.button_set_light_pos);
+            this.Controls.Add(this.textBox_Z);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.textBox_Y);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.textBox_X);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.button_draw);
             this.Controls.Add(this.groupBox_sides);
             this.Controls.Add(this.groupBox_sphere);
@@ -306,6 +389,7 @@ namespace RayTracingRoom
             this.groupBox_sides.ResumeLayout(false);
             this.groupBox_sides.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -332,6 +416,14 @@ namespace RayTracingRoom
         private System.Windows.Forms.CheckBox checkBox_front;
         private System.Windows.Forms.CheckBox checkBox_left;
         private System.Windows.Forms.Button button_draw;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBox_X;
+        private System.Windows.Forms.TextBox textBox_Y;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox_Z;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button button_set_light_pos;
     }
 }
 
