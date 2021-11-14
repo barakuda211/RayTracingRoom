@@ -58,6 +58,8 @@ namespace RayTracingRoom
             this.textBox_Z = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.button_set_light_pos = new System.Windows.Forms.Button();
+            this.button_paral_draw = new System.Windows.Forms.Button();
+            this.label_Info = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
             this.groupBox_cube1.SuspendLayout();
             this.groupBox_cube2.SuspendLayout();
@@ -284,16 +286,16 @@ namespace RayTracingRoom
             // 
             this.button_draw.Location = new System.Drawing.Point(6, 781);
             this.button_draw.Name = "button_draw";
-            this.button_draw.Size = new System.Drawing.Size(116, 23);
+            this.button_draw.Size = new System.Drawing.Size(52, 23);
             this.button_draw.TabIndex = 5;
-            this.button_draw.Text = "Draw scene";
+            this.button_draw.Text = "Draw";
             this.button_draw.UseVisualStyleBackColor = true;
             this.button_draw.Click += new System.EventHandler(this.button_draw_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(174, 785);
+            this.label1.Location = new System.Drawing.Point(318, 785);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 15);
             this.label1.TabIndex = 6;
@@ -302,7 +304,7 @@ namespace RayTracingRoom
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(257, 786);
+            this.label2.Location = new System.Drawing.Point(401, 786);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(14, 15);
             this.label2.TabIndex = 7;
@@ -310,14 +312,14 @@ namespace RayTracingRoom
             // 
             // textBox_X
             // 
-            this.textBox_X.Location = new System.Drawing.Point(272, 782);
+            this.textBox_X.Location = new System.Drawing.Point(416, 782);
             this.textBox_X.Name = "textBox_X";
             this.textBox_X.Size = new System.Drawing.Size(29, 23);
             this.textBox_X.TabIndex = 8;
             // 
             // textBox_Y
             // 
-            this.textBox_Y.Location = new System.Drawing.Point(323, 782);
+            this.textBox_Y.Location = new System.Drawing.Point(467, 782);
             this.textBox_Y.Name = "textBox_Y";
             this.textBox_Y.Size = new System.Drawing.Size(29, 23);
             this.textBox_Y.TabIndex = 10;
@@ -325,7 +327,7 @@ namespace RayTracingRoom
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(308, 786);
+            this.label3.Location = new System.Drawing.Point(452, 786);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(14, 15);
             this.label3.TabIndex = 9;
@@ -333,7 +335,7 @@ namespace RayTracingRoom
             // 
             // textBox_Z
             // 
-            this.textBox_Z.Location = new System.Drawing.Point(379, 782);
+            this.textBox_Z.Location = new System.Drawing.Point(523, 782);
             this.textBox_Z.Name = "textBox_Z";
             this.textBox_Z.Size = new System.Drawing.Size(29, 23);
             this.textBox_Z.TabIndex = 12;
@@ -341,7 +343,7 @@ namespace RayTracingRoom
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(364, 786);
+            this.label4.Location = new System.Drawing.Point(508, 786);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(14, 15);
             this.label4.TabIndex = 11;
@@ -349,7 +351,7 @@ namespace RayTracingRoom
             // 
             // button_set_light_pos
             // 
-            this.button_set_light_pos.Location = new System.Drawing.Point(418, 781);
+            this.button_set_light_pos.Location = new System.Drawing.Point(562, 781);
             this.button_set_light_pos.Name = "button_set_light_pos";
             this.button_set_light_pos.Size = new System.Drawing.Size(107, 23);
             this.button_set_light_pos.TabIndex = 13;
@@ -357,11 +359,31 @@ namespace RayTracingRoom
             this.button_set_light_pos.UseVisualStyleBackColor = true;
             this.button_set_light_pos.Click += new System.EventHandler(this.button_set_light_pos_Click);
             // 
+            // button_paral_draw
+            // 
+            this.button_paral_draw.Location = new System.Drawing.Point(64, 782);
+            this.button_paral_draw.Name = "button_paral_draw";
+            this.button_paral_draw.Size = new System.Drawing.Size(83, 23);
+            this.button_paral_draw.TabIndex = 14;
+            this.button_paral_draw.Text = "Parallel draw";
+            this.button_paral_draw.UseVisualStyleBackColor = true;
+            this.button_paral_draw.Click += new System.EventHandler(this.button_paral_draw_Click);
+            // 
+            // label_Info
+            // 
+            this.label_Info.AutoSize = true;
+            this.label_Info.Location = new System.Drawing.Point(154, 787);
+            this.label_Info.Name = "label_Info";
+            this.label_Info.Size = new System.Drawing.Size(0, 15);
+            this.label_Info.TabIndex = 15;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 812);
+            this.Controls.Add(this.label_Info);
+            this.Controls.Add(this.button_paral_draw);
             this.Controls.Add(this.button_set_light_pos);
             this.Controls.Add(this.textBox_Z);
             this.Controls.Add(this.label4);
@@ -424,6 +446,8 @@ namespace RayTracingRoom
         private System.Windows.Forms.TextBox textBox_Z;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button_set_light_pos;
+        private System.Windows.Forms.Button button_paral_draw;
+        private System.Windows.Forms.Label label_Info;
     }
 }
 

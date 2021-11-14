@@ -5,6 +5,9 @@ using System.Drawing;
 
 namespace RayTracingRoom
 {
+    /// <summary>
+    /// Базовый класс фигуры
+    /// </summary>
     public class Figure
     {
         public static float eps = 0.0001f;
@@ -31,19 +34,19 @@ namespace RayTracingRoom
             Point3D edge1 = p1 - p0;
             Point3D edge2 = p2 - p0;
             Point3D h = r.direction * edge2;
-            float a = Point3D.scalar(edge1, h);
+            float a = Point3D.ScalarMult(edge1, h);
             if (a > -eps && a < eps)
                 return false;       
             float f = 1.0f / a;
             Point3D s = r.start - p0;
-            float u = f * Point3D.scalar(s, h);
+            float u = f * Point3D.ScalarMult(s, h);
             if (u < 0 || u > 1)
                 return false;
             Point3D q = s * edge1;
-            float v = f * Point3D.scalar(r.direction, q);
+            float v = f * Point3D.ScalarMult(r.direction, q);
             if (v < 0 || u + v > 1)
                 return false;
-            float t = f * Point3D.scalar(edge2, q);
+            float t = f * Point3D.ScalarMult(edge2, q);
             if (t > eps)
             {
                 intersect = t;
@@ -60,23 +63,14 @@ namespace RayTracingRoom
             Side side = null;
             foreach (Side figure_side in sides)
             {
-
-                if (figure_side.points.Count == 3)
+                if (figure_side.points.Count == 4)
                 {
-                    if (RayIntersectsTriangle(r, figure_side.getPoint(0), figure_side.getPoint(1), figure_side.getPoint(2), out float t) && (intersect == 0 || t < intersect))
+                    if (RayIntersectsTriangle(r, figure_side[0], figure_side[1], figure_side[3], out float t) && (intersect == 0 || t < intersect))
                     {
                         intersect = t;
                         side = figure_side;
                     }
-                }
-                else if (figure_side.points.Count == 4)
-                {
-                    if (RayIntersectsTriangle(r, figure_side.getPoint(0), figure_side.getPoint(1), figure_side.getPoint(3), out float t) && (intersect == 0 || t < intersect))
-                    {
-                        intersect = t;
-                        side = figure_side;
-                    }
-                    else if (RayIntersectsTriangle(r, figure_side.getPoint(1), figure_side.getPoint(2), figure_side.getPoint(3), out t) && (intersect == 0 || t < intersect))
+                    else if (RayIntersectsTriangle(r, figure_side[1], figure_side[2], figure_side[3], out t) && (intersect == 0 || t < intersect))
                     {
                         intersect = t;
                         side = figure_side;
@@ -85,8 +79,8 @@ namespace RayTracingRoom
             }
             if (intersect != 0)
             {
-                normal = Side.norm(side);
-                fMaterial.color = new Point3D(side.drawing_pen.Color.R / 255f, side.drawing_pen.Color.G / 255f, side.drawing_pen.Color.B / 255f);
+                normal = Side.GetNormal(side);
+                fMaterial.color = new FloatColor(side.drawing_pen.Color);
                 return true;
             }
             return false;
@@ -227,18 +221,21 @@ namespace RayTracingRoom
         }
     }
 
+    /// <summary>
+    /// Куб
+    /// </summary>
     public class Cube : Figure 
     { 
         public Cube(float sz) : base()
         {
-            points.Add(new Point3D(sz / 2, sz / 2, sz / 2)); // 0 
-            points.Add(new Point3D(-sz / 2, sz / 2, sz / 2)); // 1
-            points.Add(new Point3D(-sz / 2, sz / 2, -sz / 2)); // 2
-            points.Add(new Point3D(sz / 2, sz / 2, -sz / 2)); //3
-            points.Add(new Point3D(sz / 2, -sz / 2, sz / 2)); // 4
-            points.Add(new Point3D(-sz / 2, -sz / 2, sz / 2)); //5
-            points.Add(new Point3D(-sz / 2, -sz / 2, -sz / 2)); // 6
-            points.Add(new Point3D(sz / 2, -sz / 2, -sz / 2)); // 7
+            points.Add(new Point3D(sz / 2, sz / 2, sz / 2));
+            points.Add(new Point3D(-sz / 2, sz / 2, sz / 2));
+            points.Add(new Point3D(-sz / 2, sz / 2, -sz / 2));
+            points.Add(new Point3D(sz / 2, sz / 2, -sz / 2));
+            points.Add(new Point3D(sz / 2, -sz / 2, sz / 2));
+            points.Add(new Point3D(-sz / 2, -sz / 2, sz / 2));
+            points.Add(new Point3D(-sz / 2, -sz / 2, -sz / 2));
+            points.Add(new Point3D(sz / 2, -sz / 2, -sz / 2));
 
             Side s = new Side(this);
             s.points.AddRange(new int[] { 3, 2, 1, 0 });
@@ -265,7 +262,9 @@ namespace RayTracingRoom
             sides.Add(s);
         }
     }
-
+    /// <summary>
+    /// Вспомогательный класс стороны для вычислений
+    /// </summary>
     public class Side
     {
         public Figure host = null;
@@ -287,31 +286,21 @@ namespace RayTracingRoom
             Normal = new Point3D(s.Normal);
         }
 
-        public Point3D getPoint(int index)
-        {
-            if (host != null)
-                return host.points[points[index]];
-            return null;
-        }
         public Point3D this[int index] { get { return host != null ? host.points[points[index]] : null; } }
             
-
-        public static Point3D norm(Side S)
+        public static Point3D GetNormal(Side S)
         {
             if (S.points.Count() < 3)
                 return new Point3D(0, 0, 0);
             Point3D U = S[1] - S[0];
             Point3D V = S[S.points.Count - 1] - S[0];
             Point3D normal = U * V;
-            return Point3D.norm(normal);
-        }
-
-        public void CalculateSideNormal()
-        {
-            Normal = norm(this);
+            return Point3D.Normilize(normal);
         }
     }
-
+    /// <summary>
+    /// Сфера
+    /// </summary>
     public class Sphere : Figure
     {
         float radius;
@@ -328,8 +317,8 @@ namespace RayTracingRoom
         public static bool RaySphereIntersection(Ray r, Point3D sphere_pos, float sphere_rad, out float t)
         {
             Point3D k = r.start - sphere_pos;
-            float b = Point3D.scalar(k, r.direction);
-            float c = Point3D.scalar(k, k) - sphere_rad * sphere_rad;
+            float b = Point3D.ScalarMult(k, r.direction);
+            float c = Point3D.ScalarMult(k, k) - sphere_rad * sphere_rad;
             float d = b * b - c;
             t = 0;
             if (d >= 0)
@@ -354,8 +343,8 @@ namespace RayTracingRoom
             if (RaySphereIntersection(r, points[0], radius, out t) && (t > eps))
             {
                 normal = (r.start + r.direction * t) - points[0];
-                normal = Point3D.norm(normal);
-                fMaterial.color = new Point3D(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
+                normal = Point3D.Normilize(normal);
+                fMaterial.color = new FloatColor(pen.Color);
                 return true;
             }
             return false;

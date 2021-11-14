@@ -22,7 +22,6 @@ namespace RayTracingRoom
             y = _y;
             z = _z;
         }
-
         public Point3D(Point3D p)
         {
             if (p == null)
@@ -32,7 +31,7 @@ namespace RayTracingRoom
             z = p.z;
         }
 
-        public float length()
+        public float Length()
         {
             return (float)Math.Sqrt(x * x + y * y + z * z);
         }
@@ -42,12 +41,12 @@ namespace RayTracingRoom
             return new Point3D(p1.x - p2.x, p1.y - p2.y, p1.z - p2.z);
         }
 
-        public static float scalar(Point3D p1, Point3D p2)
+        public static float ScalarMult(Point3D p1, Point3D p2)
         {
             return p1.x * p2.x + p1.y * p2.y + p1.z * p2.z;
         }
 
-        public static Point3D norm(Point3D p)
+        public static Point3D Normilize(Point3D p)
         {
             float z = (float)Math.Sqrt((float)(p.x * p.x + p.y * p.y + p.z * p.z));
             if (z == 0)
