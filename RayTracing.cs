@@ -31,19 +31,19 @@ namespace RayTracingRoom
         {
             return new FloatColor(p1.R + p2.R, p1.G + p2.G, p1.B + p2.B);
         }
-        public static FloatColor operator *(FloatColor p1, FloatColor p2)
+        public static FloatColor operator*(FloatColor p1, FloatColor p2)
         {
             return new FloatColor(p1.G * p2.B - p1.B * p2.G, p1.B * p2.R - p1.R * p2.B, p1.R * p2.G - p1.G * p2.R);
         }
-        public static FloatColor operator *(float t, FloatColor p1)
+        public static FloatColor operator*(float t, FloatColor p1)
         {
             return new FloatColor(p1.R * t, p1.G * t, p1.B * t);
         }
-        public static FloatColor operator *(FloatColor p1, float t)
+        public static FloatColor operator*(FloatColor p1, float t)
         {
             return new FloatColor(p1.R * t, p1.G * t, p1.B * t);
         }
-        public static FloatColor operator /(FloatColor p1, float t)
+        public static FloatColor operator/(FloatColor p1, float t)
         {
             return new FloatColor(p1.R / t, p1.G / t, p1.B / t);
         }
@@ -112,7 +112,7 @@ namespace RayTracingRoom
         public float environment;
         public FloatColor color;
 
-        public Material(float refl, float refr, float amb, float dif, float env = 1)
+        public Material(float refl, float refr, float amb, float dif, float env = 1.0f)
         {
             reflection = refl;
             refraction = refr;
@@ -139,13 +139,13 @@ namespace RayTracingRoom
 
     public class Light : Figure
     {
-        public Point3D point_light;
-        public FloatColor color_light;
+        public Point3D position;
+        public FloatColor color;
 
         public Light(Point3D p, FloatColor c)
         {
-            point_light = new Point3D(p);
-            color_light = new FloatColor(c);
+            position = new Point3D(p);
+            color = new FloatColor(c);
         }
 
         /// <summary>
@@ -158,10 +158,10 @@ namespace RayTracingRoom
         /// <returns></returns>
         public FloatColor Shade(Point3D hit_point, Point3D normal, FloatColor material_color, float diffuse_coef)
         {
-            Point3D dir = point_light - hit_point;
+            Point3D dir = position - hit_point;
             dir = Point3D.Normilize(dir);
 
-            FloatColor diff = diffuse_coef * color_light * Math.Max(Point3D.ScalarMult(normal, dir), 0);
+            FloatColor diff = diffuse_coef * color * Math.Max(Point3D.ScalarMult(normal, dir), 0);
             return new FloatColor(diff.R * material_color.R, diff.G * material_color.G, diff.B * material_color.B);
         }
     }

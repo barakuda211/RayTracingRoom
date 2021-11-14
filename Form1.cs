@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -47,8 +43,8 @@ namespace RayTracingRoom
         public void LoadFigures()
         {
             scene = new Cube(10);
-            Point3D normal = Side.GetNormal(scene.sides[0]);                           
-            Point3D center = (scene.sides[0][0]+ scene.sides[0][1]+ scene.sides[0][2]+ scene.sides[0][3]) / 4;   //TODO
+            Point3D normal = Side.GetNormal(scene.listSides[0]);                           
+            Point3D center = (scene.listSides[0][0]+ scene.listSides[0][1]+ scene.listSides[0][2]+ scene.listSides[0][3]) / 4;   //TODO
             camera = center + normal * 11;
 
             //Создание стен комнаты с помощью костыльных кубов
@@ -56,37 +52,37 @@ namespace RayTracingRoom
                 var front = new Cube(10);
                 front.Move(0, -10, 0);
                 front.SetPen(new Pen(Color.Red));
-                front.fMaterial = checkBox_front.Checked ? new Material(0.9f, 0f, 0f, 0.1f, 1f) : new Material(0, 0, 0.05f, 0.7f);
+                front.material = checkBox_front.Checked ? new Material(0.9f, 0f, 0f, 0.1f, 1f) : new Material(0, 0, 0.05f, 0.7f);
                 figureList.Add(front);
 
                 var left = new Cube(10);
                 left.Move(10, 0, 0);
                 left.SetPen(new Pen(Color.Orange));
-                left.fMaterial = checkBox_left.Checked ? new Material(0.9f, 0f, 0f, 0.1f, 1f) : new Material(0, 0, 0.05f, 0.7f);
+                left.material = checkBox_left.Checked ? new Material(0.9f, 0f, 0f, 0.1f, 1f) : new Material(0, 0, 0.05f, 0.7f);
                 figureList.Add(left);
 
                 var right = new Cube(10);
                 right.Move(-10, 0, 0);
                 right.SetPen(new Pen(Color.Yellow));
-                right.fMaterial = checkBox_right.Checked ? new Material(0.9f, 0f, 0f, 0.1f, 1f) : new Material(0, 0, 0.05f, 0.7f);
+                right.material = checkBox_right.Checked ? new Material(0.9f, 0f, 0f, 0.1f, 1f) : new Material(0, 0, 0.05f, 0.7f);
                 figureList.Add(right);
 
                 var back = new Cube(10);
                 back.Move(0, 10, 0);
                 back.SetPen(new Pen(Color.Blue));
-                back.fMaterial = checkBox_back.Checked ? new Material(0.9f, 0f, 0f, 0.1f, 1f) : new Material(0, 0, 0.05f, 0.7f);
+                back.material = checkBox_back.Checked ? new Material(0.9f, 0f, 0f, 0.1f, 1f) : new Material(0, 0, 0.05f, 0.7f);
                 figureList.Add(back);
 
                 var down = new Cube(10);
                 down.Move(0, 0, -10);
                 down.SetPen(new Pen(Color.Green));
-                down.fMaterial = checkBox_down.Checked ? new Material(0.9f, 0f, 0f, 0.1f, 1f) : new Material(0, 0, 0.05f, 0.7f);
+                down.material = checkBox_down.Checked ? new Material(0.9f, 0f, 0f, 0.1f, 1f) : new Material(0, 0, 0.05f, 0.7f);
                 figureList.Add(down);
 
                 var up = new Cube(10);
                 up.Move(0, 0, 10);
                 up.SetPen(new Pen(Color.White));
-                up.fMaterial = checkBox_up.Checked ? new Material(0.9f, 0f, 0f, 0.1f, 1f) : new Material(0, 0, 0.05f, 0.7f);
+                up.material = checkBox_up.Checked ? new Material(0.9f, 0f, 0f, 0.1f, 1f) : new Material(0, 0, 0.05f, 0.7f);
                 figureList.Add(up);
             }
 
@@ -100,33 +96,33 @@ namespace RayTracingRoom
                 //var sphere = new Sphere(new Point3D(-2.5f, 2, -3.25f), 2.5f);
                 sphere.SetPen(new Pen(Color.White));
                 if (rb_sphere_fill.Checked)
-                    sphere.fMaterial = new Material(0f, 0f, 0.1f, 0.7f, 1.5f);
+                    sphere.material = new Material(0f, 0f, 0.1f, 0.7f, 1.5f);
                 if (rb_sphere_transparent.Checked)
-                    sphere.fMaterial = new Material(0, 0.9f, 0.0f, 0.0f, 1.03f);
+                    sphere.material = new Material(0, 0.9f, 0.0f, 0.0f, 1.03f);
                 if (rb_sphere_mirror.Checked)
-                    sphere.fMaterial = new Material(0.9f, 0f, 0f, 0.1f, 1f);
+                    sphere.material = new Material(0.9f, 0f, 0f, 0.1f, 1f);
 
                 var cube1 = new Cube(2.8f);
                 cube1.Move(-1.5f, -0.5f, -3.9f);
                 cube1.RotateAround(-20, "CZ");
                 cube1.SetPen(new Pen(Color.Aqua));
                 if (rb_cube1_fill.Checked)
-                    cube1.fMaterial = new Material(0f, 0f, 0.1f, 0.7f, 1.5f);
+                    cube1.material = new Material(0f, 0f, 0.1f, 0.7f, 1.5f);
                 if (rb_cube1_transparent.Checked)
-                    cube1.fMaterial = new Material(0, 0.7f, 0.1f, 0.5f, 1f);
+                    cube1.material = new Material(0, 0.7f, 0.1f, 0.5f, 1f);
                 if (rb_cube1_mirror.Checked)
-                    cube1.fMaterial = new Material(0.9f, 0f, 0f, 0.1f, 1f);
+                    cube1.material = new Material(0.9f, 0f, 0f, 0.1f, 1f);
 
                 var cube2 = new Cube(3f);
                 cube2.Move(2f, 0f, -3.6f);
                 cube2.RotateAround(20, "CZ");
                 cube2.SetPen(new Pen(Color.Green));
                 if (rb_cube2_fill.Checked)
-                    cube2.fMaterial = new Material(0f, 0f, 0.1f, 0.7f, 1.5f);
+                    cube2.material = new Material(0f, 0f, 0.1f, 0.7f, 1.5f);
                 if (rb_cube2_transparent.Checked)
-                    cube2.fMaterial = new Material(0, 0.7f, 0.1f, 0.5f, 1f);
+                    cube2.material = new Material(0, 0.7f, 0.1f, 0.5f, 1f);
                 if (rb_cube2_mirror.Checked)
-                    cube2.fMaterial = new Material(0.9f, 0f, 0f, 0.1f, 1f);
+                    cube2.material = new Material(0.9f, 0f, 0f, 0.1f, 1f);
 
                 figureList.Add(cube1);
                 figureList.Add(cube2);
@@ -153,10 +149,10 @@ namespace RayTracingRoom
             g.Clear(Color.White);
             pixelMatrix = new Point3D[pb.Width, pb.Height];
             colorMatrix = new Color[pb.Width, pb.Height];
-            step_up = (scene.sides[0][1] - scene.sides[0][0]) / (pb.Width - 1);
-            step_down = (scene.sides[0][2] - scene.sides[0][3]) / (pb.Height - 1);
-            up = new Point3D(scene.sides[0][0]);
-            down = new Point3D(scene.sides[0][3]);
+            step_up = (scene.listSides[0][1] - scene.listSides[0][0]) / (pb.Width - 1);
+            step_down = (scene.listSides[0][2] - scene.listSides[0][3]) / (pb.Height - 1);
+            up = new Point3D(scene.listSides[0][0]);
+            down = new Point3D(scene.listSides[0][3]);
             for (int i = 0; i < pb.Width; ++i)
             {
                 Point3D step_y = (up - down) / (pb.Height - 1);
@@ -194,10 +190,10 @@ namespace RayTracingRoom
             g.Clear(Color.White);
             pixelMatrix = new Point3D[pb.Width, pb.Height];
             colorMatrix = new Color[pb.Width, pb.Height];
-            step_up = (scene.sides[0][1] - scene.sides[0][0]) / (pb.Width - 1);
-            step_down = (scene.sides[0][2] - scene.sides[0][3]) / (pb.Height - 1);
-            up = new Point3D(scene.sides[0][0]);
-            down = new Point3D(scene.sides[0][3]);
+            step_up = (scene.listSides[0][1] - scene.listSides[0][0]) / (pb.Width - 1);
+            step_down = (scene.listSides[0][2] - scene.listSides[0][3]) / (pb.Height - 1);
+            up = new Point3D(scene.listSides[0][0]);
+            down = new Point3D(scene.listSides[0][3]);
             for (int i = 0; i < pb.Width; ++i)
             {
                 Point3D step_y = (up - down) / (pb.Height - 1);
@@ -233,8 +229,6 @@ namespace RayTracingRoom
             colorMatrix[i, j] = color.ToColor();
 
         }
-
-
 
         private void button_draw_Click(object sender, EventArgs e)
         {
@@ -293,74 +287,109 @@ namespace RayTracingRoom
         /// <summary>
         /// Рекурсивный поиск пересечения луча с фигурами
         /// </summary>
-        /// <param name="r">Луч</param>
-        /// <param name="iter">Глубина рекурсии</param>
+        /// <param name="current_ray">Луч</param>
+        /// <param name="iterations_last">Оставшиеся итерации рекурсии</param>
         /// <param name="env">Коэфицент преломления среды</param>
         /// <returns></returns>
-        public FloatColor Tracing(Ray r, int iter, float env)
+        public FloatColor Tracing(Ray current_ray, int iterations_last, float env)
         {
             //выход из рекурсии
-            if (iter <= 0)
+            if (iterations_last <= 0)
                 return new FloatColor();
-            float rey_fig_intersect = 0;
 
             Point3D normal = null;
             Material material = new Material();
-            FloatColor res_color = new FloatColor();
+            FloatColor result = new FloatColor();
 
             //поиск ближайшего пересечения
-            foreach (Figure fig in figureList)
-            {
-                if (fig.FigureIntersection(r, out float intersect, out Point3D norm))
-                    if (intersect < rey_fig_intersect || rey_fig_intersect == 0)
-                    {
-                        rey_fig_intersect = intersect;
-                        normal = norm;
-                        material = new Material(fig.fMaterial);
-                    }
-            }
+            float distance_to_figure = FindNearestIntersection(current_ray, ref normal, ref material);
 
             //отсечение луча, если нет пересечения с фигурой
-            if (rey_fig_intersect == 0)
+            if (distance_to_figure == -1)
                 return new FloatColor();
+
+            //точка падения луча
+            Point3D hit_point = current_ray.start + current_ray.direction * distance_to_figure;
 
             //отражение луча, если угол 
             float refract_coef = 1 / material.environment;
-            if (Point3D.ScalarMult(r.direction, normal) > 0)
+            if (Point3D.ScalarMult(current_ray.direction, normal) > 0)
             {
                 normal *= -1;
                 refract_coef = material.environment;
             }
 
-            Point3D hit_point = r.start + r.direction * rey_fig_intersect;
-
             //Обработка источников света
+            result += HandleLight(hit_point, normal, material);
+
+            //Запуск луча на преломление
+            result += HandleRefraction(hit_point, normal, material, refract_coef, current_ray, iterations_last);
+
+            //Запуск луча на отражение
+            result += HandleReflection(hit_point, normal, material, current_ray, iterations_last, env);
+
+            return result;
+        }
+
+        //Возвращает расстояние до ближайшей фигуры или -1
+        private float FindNearestIntersection(Ray current_ray, ref Point3D normal, ref Material material)
+        {
+            var result = float.MaxValue;
+            foreach (Figure fig in figureList)
+            {
+                if (fig.FigureIntersection(current_ray, out float intersect, out Point3D norm))
+                    if (intersect < result)
+                    {
+                        result = intersect;
+                        normal = norm;
+                        material = new Material(fig.material);
+                    }
+            }
+            if (result == float.MaxValue)
+                return -1;
+            return result;
+        }
+
+        //Обработка отражения
+        private FloatColor HandleReflection(Point3D hit_point, Point3D normal, Material material, Ray cur_ray, int iteration, float env_coef)
+        {
+            var result = new FloatColor();
+            if (material.reflection > 0)
+            {
+                Ray reflected_ray = cur_ray.Reflect(hit_point, normal);
+                result += material.reflection * Tracing(reflected_ray, iteration - 1, env_coef);
+            }
+            return result;
+        }
+
+        //Обработка преломления
+        private FloatColor HandleRefraction(Point3D hit_point, Point3D normal, Material material, float refract_coef, Ray cur_ray, int iteration)
+        {
+            var result = new FloatColor();
+            if (material.refraction > 0)
+            {
+                Ray refracted_ray = cur_ray.Refract(hit_point, normal, refract_coef);
+                if (refracted_ray != null)
+                    result += material.refraction * Tracing(refracted_ray, iteration - 1, material.environment);
+            }
+            return result;
+        }
+
+        //Обработка падения света
+        private FloatColor HandleLight(Point3D hit_point, Point3D normal, Material material)
+        {
+            var result = new FloatColor();
             foreach (Light light in lightList)
             {
-                FloatColor ambient_coef = light.color_light * material.ambient;
+                FloatColor ambient_coef = light.color * material.ambient;
                 ambient_coef.R = (ambient_coef.R * material.color.R);
                 ambient_coef.G = (ambient_coef.G * material.color.G);
                 ambient_coef.B = (ambient_coef.B * material.color.B);
-                res_color += ambient_coef;
-                if (HasLightRay(light.point_light, hit_point))
-                    res_color += light.Shade(hit_point, normal, material.color, material.diffuse);
+                result += ambient_coef;
+                if (HasLightRay(light.position, hit_point))
+                    result += light.Shade(hit_point, normal, material.color, material.diffuse);
             }
-
-            //Запуск луча на преломление
-            if (material.refraction > 0)
-            {
-                Ray refracted_ray = r.Refract(hit_point, normal, refract_coef);
-                if (refracted_ray != null)
-                    res_color += material.refraction * Tracing(refracted_ray, iter - 1, material.environment);
-            }
-
-            //Запуск луча на отражение
-            if (material.reflection > 0)
-            {
-                Ray reflected_ray = r.Reflect(hit_point, normal);
-                res_color += material.reflection * Tracing(reflected_ray, iter - 1, env);
-            }
-            return res_color;
+            return result;
         }
 
         /// <summary>

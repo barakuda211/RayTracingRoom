@@ -11,20 +11,20 @@ namespace RayTracingRoom
     public class Figure
     {
         public static float eps = 0.0001f;
-        public List<Point3D> points = new List<Point3D>();
-        public List<Side> sides = new List<Side>();
-        public Material fMaterial;
+        public List<Point3D> listPoints = new List<Point3D>();
+        public List<Side> listSides = new List<Side>();
+        public Material material;
         public Figure() { }
 
         public Figure(Figure f)
         {
-            foreach (Point3D p in f.points)
-                points.Add(new Point3D(p));
+            foreach (Point3D p in f.listPoints)
+                listPoints.Add(new Point3D(p));
 
-            foreach (Side s in f.sides)
+            foreach (Side s in f.listSides)
             {
-                sides.Add(new Side(s));
-                sides.Last().host = this;
+                listSides.Add(new Side(s));
+                listSides.Last().host = this;
             }
         }
 
@@ -61,9 +61,9 @@ namespace RayTracingRoom
             intersect = 0;
             normal = null;
             Side side = null;
-            foreach (Side figure_side in sides)
+            foreach (Side figure_side in listSides)
             {
-                if (figure_side.points.Count == 4)
+                if (figure_side.listPoints.Count == 4)
                 {
                     if (RayIntersectsTriangle(r, figure_side[0], figure_side[1], figure_side[3], out float t) && (intersect == 0 || t < intersect))
                     {
@@ -80,7 +80,7 @@ namespace RayTracingRoom
             if (intersect != 0)
             {
                 normal = Side.GetNormal(side);
-                fMaterial.color = new FloatColor(side.drawing_pen.Color);
+                material.color = new FloatColor(side.pen.Color);
                 return true;
             }
             return false;
@@ -88,12 +88,12 @@ namespace RayTracingRoom
 
         public float[,] GetMatrix()
         {
-            var res = new float[points.Count, 4];
-            for (int i = 0; i < points.Count; i++)
+            var res = new float[listPoints.Count, 4];
+            for (int i = 0; i < listPoints.Count; i++)
             {
-                res[i, 0] = points[i].x;
-                res[i, 1] = points[i].y;
-                res[i, 2] = points[i].z;
+                res[i, 0] = listPoints[i].x;
+                res[i, 1] = listPoints[i].y;
+                res[i, 2] = listPoints[i].z;
                 res[i, 3] = 1;
             }
             return res;
@@ -101,27 +101,27 @@ namespace RayTracingRoom
 
         public void ApplyMatrix(float[,] matrix)
         {
-            for (int i = 0; i < points.Count; i++)
+            for (int i = 0; i < listPoints.Count; i++)
             {
-                points[i].x = matrix[i, 0] / matrix[i, 3];
-                points[i].y = matrix[i, 1] / matrix[i, 3];
-                points[i].z = matrix[i, 2] / matrix[i, 3];
+                listPoints[i].x = matrix[i, 0] / matrix[i, 3];
+                listPoints[i].y = matrix[i, 1] / matrix[i, 3];
+                listPoints[i].z = matrix[i, 2] / matrix[i, 3];
             }
         }
 
         private Point3D GetCenter()
         {
             Point3D res = new Point3D(0, 0, 0);
-            foreach (Point3D p in points)
+            foreach (Point3D p in listPoints)
             {
                 res.x += p.x;
                 res.y += p.y;
                 res.z += p.z;
 
             }
-            res.x /= points.Count();
-            res.y /= points.Count();
-            res.z /= points.Count();
+            res.x /= listPoints.Count();
+            res.y /= listPoints.Count();
+            res.z /= listPoints.Count();
             return res;
         }
 
@@ -173,8 +173,8 @@ namespace RayTracingRoom
 
         public virtual void SetPen(Pen dw)
         {
-            foreach (Side s in sides)
-                s.drawing_pen = dw;
+            foreach (Side s in listSides)
+                s.pen = dw;
         }
 
         private static float[,] MultiplyMatrix(float[,] m1, float[,] m2)
@@ -220,7 +220,6 @@ namespace RayTracingRoom
             return MultiplyMatrix(transform_matrix, rotationMatrix);
         }
     }
-
     /// <summary>
     /// Куб
     /// </summary>
@@ -228,38 +227,38 @@ namespace RayTracingRoom
     { 
         public Cube(float sz) : base()
         {
-            points.Add(new Point3D(sz / 2, sz / 2, sz / 2));
-            points.Add(new Point3D(-sz / 2, sz / 2, sz / 2));
-            points.Add(new Point3D(-sz / 2, sz / 2, -sz / 2));
-            points.Add(new Point3D(sz / 2, sz / 2, -sz / 2));
-            points.Add(new Point3D(sz / 2, -sz / 2, sz / 2));
-            points.Add(new Point3D(-sz / 2, -sz / 2, sz / 2));
-            points.Add(new Point3D(-sz / 2, -sz / 2, -sz / 2));
-            points.Add(new Point3D(sz / 2, -sz / 2, -sz / 2));
+            listPoints.Add(new Point3D(sz / 2, sz / 2, sz / 2));
+            listPoints.Add(new Point3D(-sz / 2, sz / 2, sz / 2));
+            listPoints.Add(new Point3D(-sz / 2, sz / 2, -sz / 2));
+            listPoints.Add(new Point3D(sz / 2, sz / 2, -sz / 2));
+            listPoints.Add(new Point3D(sz / 2, -sz / 2, sz / 2));
+            listPoints.Add(new Point3D(-sz / 2, -sz / 2, sz / 2));
+            listPoints.Add(new Point3D(-sz / 2, -sz / 2, -sz / 2));
+            listPoints.Add(new Point3D(sz / 2, -sz / 2, -sz / 2));
 
             Side s = new Side(this);
-            s.points.AddRange(new int[] { 3, 2, 1, 0 });
-            sides.Add(s);
+            s.listPoints.AddRange(new int[] { 3, 2, 1, 0 });
+            listSides.Add(s);
 
             s = new Side(this);
-            s.points.AddRange(new int[] { 4, 5, 6, 7 });
-            sides.Add(s);
+            s.listPoints.AddRange(new int[] { 4, 5, 6, 7 });
+            listSides.Add(s);
 
             s = new Side(this);
-            s.points.AddRange(new int[] { 2, 6, 5, 1 });
-            sides.Add(s);
+            s.listPoints.AddRange(new int[] { 2, 6, 5, 1 });
+            listSides.Add(s);
 
             s = new Side(this);
-            s.points.AddRange(new int[] { 0, 4, 7, 3 });
-            sides.Add(s);
+            s.listPoints.AddRange(new int[] { 0, 4, 7, 3 });
+            listSides.Add(s);
 
             s = new Side(this);
-            s.points.AddRange(new int[] { 1, 5, 4, 0 });
-            sides.Add(s);
+            s.listPoints.AddRange(new int[] { 1, 5, 4, 0 });
+            listSides.Add(s);
 
             s = new Side(this);
-            s.points.AddRange(new int[] { 2, 3, 7, 6 });
-            sides.Add(s);
+            s.listPoints.AddRange(new int[] { 2, 3, 7, 6 });
+            listSides.Add(s);
         }
     }
     /// <summary>
@@ -268,10 +267,9 @@ namespace RayTracingRoom
     public class Side
     {
         public Figure host = null;
-        public List<int> points = new List<int>();
-        public Pen drawing_pen = new Pen(Color.Black);
+        public List<int> listPoints = new List<int>();
+        public Pen pen = new Pen(Color.Black);
         public Point3D Normal;
-        public Material anotherMaterial = new Material();
 
         public Side(Figure h = null)
         {
@@ -280,20 +278,20 @@ namespace RayTracingRoom
 
         public Side(Side s)
         {
-            points = new List<int>(s.points);
+            listPoints = new List<int>(s.listPoints);
             host = s.host;
-            drawing_pen = s.drawing_pen.Clone() as Pen;
+            pen = s.pen.Clone() as Pen;
             Normal = new Point3D(s.Normal);
         }
 
-        public Point3D this[int index] { get { return host != null ? host.points[points[index]] : null; } }
+        public Point3D this[int index] { get { return host != null ? host.listPoints[listPoints[index]] : null; } }
             
         public static Point3D GetNormal(Side S)
         {
-            if (S.points.Count() < 3)
+            if (S.listPoints.Count() < 3)
                 return new Point3D(0, 0, 0);
             Point3D U = S[1] - S[0];
-            Point3D V = S[S.points.Count - 1] - S[0];
+            Point3D V = S[S.listPoints.Count - 1] - S[0];
             Point3D normal = U * V;
             return Point3D.Normilize(normal);
         }
@@ -308,7 +306,7 @@ namespace RayTracingRoom
 
         public Sphere(Point3D p, float r)
         {
-            points.Add(p);
+            listPoints.Add(p);
             radius = r;
         }
 
@@ -340,11 +338,11 @@ namespace RayTracingRoom
         {
             t = 0;
             normal = null;
-            if (RaySphereIntersection(r, points[0], radius, out t) && (t > eps))
+            if (RaySphereIntersection(r, listPoints[0], radius, out t) && (t > eps))
             {
-                normal = (r.start + r.direction * t) - points[0];
+                normal = (r.start + r.direction * t) - listPoints[0];
                 normal = Point3D.Normilize(normal);
-                fMaterial.color = new FloatColor(pen.Color);
+                material.color = new FloatColor(pen.Color);
                 return true;
             }
             return false;
