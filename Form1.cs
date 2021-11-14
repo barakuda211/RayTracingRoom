@@ -201,6 +201,7 @@ namespace RayTracingRoom
         /// <returns></returns>
         public Point3D Tracing(Ray r, int iter, float env)
         {
+            //выход из рекурсии
             if (iter <= 0)
                 return new Point3D(0, 0, 0);
             float rey_fig_intersect = 0;
@@ -209,17 +210,12 @@ namespace RayTracingRoom
             Material material = new Material();
             Point3D res_color = new Point3D(0, 0, 0);
 
-            bool out_refract = false;
-            bool nothing = false;
-
             //поиск ближайшего пересечения
             foreach (Figure fig in figureList)
             {
                 if (fig.FigureIntersection(r, out float intersect, out Point3D norm))
                     if (intersect < rey_fig_intersect || rey_fig_intersect == 0)
                     {
-                        if (fig.GetType() == typeof(Sphere))
-                            nothing = true;
                         rey_fig_intersect = intersect;
                         normal = norm;
                         material = new Material(fig.fMaterial);
@@ -229,15 +225,16 @@ namespace RayTracingRoom
             if (rey_fig_intersect == 0)
                 return new Point3D(0, 0, 0);
 
-
+            float refract_coef = 1 / material.environment;
             if (Point3D.scalar(r.direction, normal) > 0)
             {
                 normal *= -1;
-                out_refract = true;
+                refract_coef = material.environment;
             }
 
             Point3D hit_point = r.start + r.direction * rey_fig_intersect;
 
+            //Обработка источников света
             foreach (Light light in lightList)
             {
                 Point3D ambient_coef = light.color_light * material.ambient;
@@ -249,29 +246,28 @@ namespace RayTracingRoom
                     res_color += light.Shade(hit_point, normal, material.color, material.diffuse);
             }
 
+            //Запуск луча на преломление
+            if (material.refraction > 0)
+            {
+                Ray refracted_ray = r.Refract(hit_point, normal, refract_coef);
+                if (refracted_ray != null)
+                    res_color += material.refraction * Tracing(refracted_ray, iter - 1, material.environment);
+            }
+
+            //Запуск луча на отражение
             if (material.reflection > 0)
             {
                 Ray reflected_ray = r.Reflect(hit_point, normal);
                 res_color += material.reflection * Tracing(reflected_ray, iter - 1, env);
             }
-
-            if (material.refraction > 0)
-            {
-                float refract_coef;
-                if (out_refract)
-                    refract_coef = material.environment;
-                else
-                    refract_coef = 1 / material.environment;
-
-                Ray refracted_ray = r.Refract(hit_point, normal, refract_coef);
-
-                if (refracted_ray != null)
-                    res_color += material.refraction * Tracing(refracted_ray, iter - 1, material.environment);
-            }
             return res_color;
         }
 
-
+        /// <summary>
+        /// Замена позиции дополнительного света
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_set_light_pos_Click(object sender, EventArgs e)
         {
             double x, y, z;
